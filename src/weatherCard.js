@@ -39,7 +39,7 @@ class WeatherCard extends React.Component {
     if (this.props.isMetric){
       windVal = this.toKph(this.props.data.windSpeed) + "kph";
     } else {
-      windVal = this.toMph(this.props.data.currentTemp) + "mph";
+      windVal = this.toMph(this.props.data.windSpeed) + "mph";
     }
 
     return(
