@@ -8,12 +8,6 @@ class WeatherCard extends React.Component {
   
   constructor(props){
     super(props);
-
-    this.state = {
-      data: props.data,
-      isCelsius: true,
-      isKph: false
-    };
   }
 
   toCelsius(temp){
@@ -31,33 +25,64 @@ class WeatherCard extends React.Component {
   toKph(speed){
     return Math.round((speed*3.6)*100)/100;
   }
-
+  
   render(){
+
+    let temp;
+    if (this.props.isMetric){
+      temp = this.toCelsius(this.props.data.currentTemp) + " \u00b0C";
+    } else {
+      temp = this.toFahrenheit(this.props.data.currentTemp) + " \u00b0F";
+    }
+
+    let windVal;
+    if (this.props.isMetric){
+      windVal = this.toKph(this.props.data.windSpeed) + "kph";
+    } else {
+      windVal = this.toMph(this.props.data.currentTemp) + "mph";
+    }
+
     return(
-      <div className="weatherCard">
-        <div className="primaryWeather">
-          <div className="currentTemp">{this.toCelsius(this.state.data.currentTemp)}&#176;</div>
-          <div className="current description">{this.state.data.currentDescription}</div>
+      <div className="cardContainer">
+        <div className="primaryContainer">
+          <div className="weatherIconContainer">
+            <img className="weatherIcon" src={`http://openweathermap.org/img/wn/${this.props.data.icon}@2x.png`}></img>
+          </div>
+
+          <div className="primaryWeather">
+            <div className="currentTemp">{temp}</div>
+            <div className="currentDescription">{this.props.data.currentDescription}</div>
+          </div>
+
+          <div>
+            <div className="unitsContainer">
+              <button name="metric" className= {(this.props.isMetric ? "unitSelected" : "unitNotSelected")+ " unitButton"} onClick={this.props.changeUnits}>Metric</button>
+              <button name="imperial" className={(this.props.isMetric ? "unitNotSelected" : "unitSelected") + " unitButton"} onClick={this.props.changeUnits}>Imperial</button>
+            </div>
+          </div>
         </div>
 
         <div className="secondaryContainer">
           <div className="secondaryDisplay">
             <img src={wind} alt="wind"/>
-            {this.toKph(this.state.data.windSpeed)}kph {this.state.data.windDirection}
+            {windVal} {this.props.data.windDirection}
           </div>
+
           <div className="secondaryDisplay">
             <img src={rainDrop} alt="Rain"/>
-            {this.state.data.rainForecast}%
+            {this.props.data.rainForecast*100}%
           </div>
+
           <div className="secondaryDisplay">
             <img src={cloud} alt="cloud"/>
-            {this.state.data.clouds}%
+            {this.props.data.clouds}%
           </div>
         </div>
         
         <div className="forecast">
           
         </div>
+
       </div>
     );
   }

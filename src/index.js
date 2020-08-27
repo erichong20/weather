@@ -12,16 +12,61 @@ class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      address: "Issaquah"
+      displayAddress: "",
+      address: "Issaquah",
+      weather: null,
     }
+
+    this.initializeContent = this.initializeContent.bind(this);
+    this.changeAddress = this.changeAddress.bind(this);
+    this.handleUnload = this.handleUnload.bind(this);
+
+    this.initializeContent();
+  }
+
+  componentDidMount(){
+    window.addEventListener("beforeunload", this.handleUnload);
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener("beforeunload", this.handleUnload);
+  }
+
+  async initializeContent(){
+    const current = localStorage.getItem("currentAddress");
+
+    if(current){
+      this.setState({address: await current});
+    }
+
+    const weatherObj = await weatherAPI.fetchWeather(this.state.address);
+    this.setState({weather: weatherObj});
+
+    const displayAddress = weatherObj.address;
+    await this.setState({displayAddress: displayAddress});
+  }
+
+  handleUnload(){
+    localStorage.setItem("currentAddress",this.state.address);
+  }
+
+  async changeAddress(newAddress){
+    await this.setState({address: newAddress});
+    const weatherObj = await weatherAPI.fetchWeather(this.state.address);
+
+    const displayAddress = weatherObj.address;
+    await this.setState({displayAddress: displayAddress});
+
+    await this.setState({weather: weatherObj});
   }
 
   render(){
     return(
     <div className="pageContainer">
       <div className="main">
-        <Header address={this.state.address}/>
-        <Content address={this.state.address}/>
+        <Header address={this.state.displayAddress}/>
+        <Content weather={this.state.weather}/>
+        <NewAddress newAddress={this.changeAddress}/>
       </div>
       <Footer />
     </div>
@@ -32,17 +77,44 @@ class Home extends React.Component {
 class Header extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      address: props.address
-    }
   }
 
   render(){
-    weatherAPI.fetchWeather(this.state.address);
     return(
       <div className="headerContainer">
-        <h1 className="header">Weather in <span className="headerLocation">{this.state.address}</span></h1>
+        <h1 className="header">Weather in <span className="headerLocation">{this.props.address}</span></h1>
       </div>
+    );
+  }
+}
+
+class NewAddress extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      value: ""
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event){
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event){
+    this.setState({value: ""});
+    this.props.newAddress(this.state.value); 
+    event.preventDefault(); 
+  }
+
+  render(){
+    return(
+      <form className="newAddress" onSubmit={this.handleSubmit}>
+        <input className="newAddressInput" type="text" name="search" value={this.state.value} onChange={this.handleChange} placeholder="New Location" required></input>
+        <button className="newAddressSubmit" type="submit" value="submit">Update</button>
+      </form>
     );
   }
 }

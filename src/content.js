@@ -7,22 +7,24 @@ class Content extends React.Component {
 
   constructor(props){
     super(props);
+
     this.state = {
-      address: props.address,
-      weather: null
+      isMetric: true
     }
 
-    this.initializeContent();
+    this.changeUnits = this.changeUnits.bind(this);
   }
 
-  async initializeContent(){
-    const weatherObj = await weatherAPI.fetchWeather(this.state.address);
-    this.setState({weather: weatherObj});
-    console.log(this.state.weather.currentDescription);
+  changeUnits(event){
+    if(event.target.name==="metric"){
+      this.setState({isMetric: true});
+    } else {
+      this.setState({isMetric: false});
+    }
   }
 
   render(){
-    if(this.state.weather===null){
+    if(this.props.weather===null){
       return(
         <div className="loadingContainer">
           <div className="loading">Loading</div>
@@ -32,7 +34,7 @@ class Content extends React.Component {
     } else {
       return(
         <div className="content">
-          <WeatherCard data={this.state.weather}/>
+          <WeatherCard data={this.props.weather} isMetric={this.state.isMetric} changeUnits={this.changeUnits}/>
         </div>
       );
     }

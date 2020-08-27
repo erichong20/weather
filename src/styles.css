@@ -59,8 +59,55 @@ body{
   min-height: 100vh;
 }
 
+.newAddress{
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  width: 200px;
+  justify-content: center;
+}
+
+.newAddressInput{
+  margin-right: 10px;
+  padding: 10px 5px;
+  border: 1px solid white;
+
+  background-color: lightgray;
+}
+
+.newAddressSubmit{
+  color: white;
+  font-family: "Roboto";
+  background-color: var(--deep-blue);
+
+  border: 1px solid white;
+
+  display:inline-block;
+  padding:0.35em 1.2em;
+  border-radius: 0.12em;
+  text-align: center;
+
+  transition: all 0.2s;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.newAddressSubmit:hover{
+  cursor: pointer;
+  background-color: white;
+  color: var(--deep-blue);
+}
+
+.cardContainer{
+  width: 100%;
+  justify-content: center;
+}
+
 .secondaryContainer{
   margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
   justify-content: center;
   align-content: center;
 
@@ -68,7 +115,7 @@ body{
   grid-auto-rows: 100px;
 
   height: 100px;
-  width: 100%;
+  max-width: 50%;
 
   display: grid;
 }
@@ -99,21 +146,83 @@ body{
   text-align: center;
 }
 
-.weatherCard{
+.primaryContainer{
   margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
-  align-content: center;
-  width: 80%;
-
   display: grid;
+  grid-template-columns: 20% 60% 20%;
+
+  align-content: top;
+  justify-content: center;
+  width: 70%;
+
+  margin-right: auto;
+  margin-left: auto;
   color: white;
+}
+
+.weatherIconContainer{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.weatherIcon{
+  margin-top: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.unitsContainer{
+  margin-left: 10px;
+  max-width: 80px;
+}
+
+.unitsContainer > button{
+  color: white;
+  font-family: "Roboto";
+  background-color: inherit;
+
+  border: 1px solid white;
+
+  display:inline-block;
+  padding:0.35em 1.2em;
+  border-radius: 0.12em;
+  text-align: center;
+
+  transition: all 0.2s;
+  box-sizing: border-box;
+  text-decoration: none;
+  width: 80px;
+
+  margin-bottom: 5px;
+
+  height: 34px;
+}
+
+.unitNotSelected{
+  opacity: 0.5;
+}
+
+.unitSelected{
+  font-family: "RobotoBold";
+  opacity: 1;
+  color: red;
+}
+
+.unitButton:hover{
+  cursor: pointer;
+  background-color: white;
+  color: var(--deep-blue);
 }
 
 .currentTemp{
   font-family: "RobotoBold";
   font-size: 7rem;
+}
+
+.currentDescription{
+  font-family: "RobotoBold";
+  font-size: 2rem;
 }
 
 .loadingContainer{

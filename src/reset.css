@@ -21,3 +21,8 @@ time, mark, audio, video {
 ol, ul {
 	list-style: none;
 }
+
+button:focus{
+  outline: none;
+  box-shadow: none;
+}
