@@ -70,7 +70,7 @@ class WeatherCard extends React.Component {
 
           <div className="secondaryDisplay">
             <img src={rainDrop} alt="Rain"/>
-            {this.props.data.rainForecast*100}%
+            {Math.round((this.props.data.rainForecast*100)*100)/100}%
           </div>
 
           <div className="secondaryDisplay">
